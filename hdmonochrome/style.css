@@ -125,6 +125,10 @@ font-family:"Adobe Garamond Pro Bold", Georgia, "Times New Roman", Times, serif;
 	display: block;
   }
 
+  .form-container2{
+	margin-left: 15px;
+  }
+
 .contentBox
 {
 margin-top:10px;
