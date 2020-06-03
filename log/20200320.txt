@@ -1,0 +1,37 @@
+
+2020-03-20 15:21:37.2895407 +0700 +07 m=+75.633432501
+{"Name":"charizard","FrontDefault":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png","BackDefault":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/6.png","FrontShiny":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/6.png","BackShiny":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/6.png","DataBefore":5,"DataAfter":7}
+############
+2020-03-20 15:21:46.12498 +0700 +07 m=+84.468871801
+{"Name":"squirtle","FrontDefault":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png","BackDefault":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/7.png","FrontShiny":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/7.png","BackShiny":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/7.png","DataBefore":6,"DataAfter":8}
+############
+2020-03-20 15:21:52.6150059 +0700 +07 m=+90.958897701
+{"Name":"wartortle","FrontDefault":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/8.png","BackDefault":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/8.png","FrontShiny":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/8.png","BackShiny":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/8.png","DataBefore":7,"DataAfter":9}
+############
+2020-03-20 15:22:01.3787031 +0700 +07 m=+99.722594901
+{"Name":"blastoise","FrontDefault":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png","BackDefault":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/9.png","FrontShiny":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/9.png","BackShiny":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/9.png","DataBefore":8,"DataAfter":10}
+############
+2020-03-20 15:22:23.7191869 +0700 +07 m=+122.063078701
+{"Name":"metapod","FrontDefault":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/11.png","BackDefault":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/11.png","FrontShiny":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/11.png","BackShiny":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/11.png","DataBefore":10,"DataAfter":12}
+############
+2020-03-20 15:22:40.8373906 +0700 +07 m=+139.181282401
+{"Name":"kakuna","FrontDefault":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/14.png","BackDefault":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/14.png","FrontShiny":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/14.png","BackShiny":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/14.png","DataBefore":13,"DataAfter":15}
+############
+2020-03-20 15:35:48.1740019 +0700 +07 m=+22.611171501
+{"Name":"blastoise","FrontDefault":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png","BackDefault":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/9.png","FrontShiny":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/9.png","BackShiny":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/9.png","DataBefore":8,"DataAfter":10}
+############
+2020-03-20 16:33:54.9472599 +0700 +07 m=+12.883591601
+{"Name":"bulbasaur","FrontDefault":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png","BackDefault":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png","FrontShiny":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1.png","BackShiny":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/1.png","DataBefore":0,"DataAfter":2}
+############
+2020-03-20 16:36:51.806462 +0700 +07 m=+189.742793701
+{"Name":"ivysaur","FrontDefault":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png","BackDefault":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/2.png","FrontShiny":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/2.png","BackShiny":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/2.png","DataBefore":1,"DataAfter":3}
+############
+2020-03-20 16:37:40.1260823 +0700 +07 m=+3.901562701
+{"Name":"venusaur","FrontDefault":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png","BackDefault":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/3.png","FrontShiny":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/3.png","BackShiny":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/3.png","DataBefore":2,"DataAfter":4}
+############
+2020-03-20 16:39:33.1752756 +0700 +07 m=+2.876708601
+{"Name":"charmander","FrontDefault":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png","BackDefault":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/4.png","FrontShiny":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/4.png","BackShiny":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/4.png","DataBefore":3,"DataAfter":5}
+############
+2020-03-20 16:43:19.1199485 +0700 +07 m=+6.120178301
+{"Name":"venusaur","FrontDefault":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png","BackDefault":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/3.png","FrontShiny":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/3.png","BackShiny":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/3.png","DataBefore":2,"DataAfter":4}
+############

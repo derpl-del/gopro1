@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="static/style.css" />
+<title>PokeWeb</title>
+</head>
+
+<body>
+    <div id="page">
+        <div class="topNaviagationLink"><a href="index.html">Home</a></div>
+	</div>
+    <div id="mainPicture">
+    	<div class="picture">
+        	<div id="headerTitle">PokeWeb</div>
+            <div id="headerSubtext">Pokemon info for nerd</div>
+        </div>
+    </div>
+        <div class="contentBox">
+    	  <div class="innerBox">
+          <h1>Find Your Pokemon</h1>
+          <form action="/result">
+            <label for="pokemon">{{.Name}}</label>
+            <select id="pokemon" name="pokemon">
+              {{range .Pokemon}}
+              <option value="{{.EntryNo}}">{{.Species.Name}}</option>
+              {{end}}
+            </select>
+            <input type="submit" >
+          </form>
+    </div>
+</div>  
+</body>
+</html>
