@@ -92,10 +92,6 @@ func ValidationData(input1 string) bool {
 	return true
 }
 
-func db1() {
-	fmt.Println("server started at localhost:9000")
-}
-
 //GetData a
 func GetData(input1 string) (string, string, string, string, string, string, int, int) {
 	fmt.Println("GetData")
