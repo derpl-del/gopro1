@@ -104,6 +104,15 @@ type Response2 struct {
 	Weight int `json:"weight"`
 }
 
+//A Article to map every pokemon to.
+type Article struct {
+	EntryNo int
+	Species string
+}
+
+//Articles array
+var Articles []Article
+
 //GetValue Func
 func GetValue() *Response {
 	response, err := http.Get("http://pokeapi.co/api/v2/pokedex/kanto/")
@@ -139,4 +148,14 @@ func GetPokeData(input string) *Response2 {
 	var responseObject Response2
 	json.Unmarshal(responseData, &responseObject)
 	return &responseObject
+}
+
+//SearchFunc Func
+func SearchFunc() {
+	Articles = []Article{}
+	data := GetValue()
+	for i := 0; i < len(data.Pokemon); i++ {
+		newdata := Article{EntryNo: data.Pokemon[i].EntryNo, Species: data.Pokemon[i].Species.Name}
+		Articles = append(Articles, newdata)
+	}
 }

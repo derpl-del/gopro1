@@ -22,13 +22,13 @@
             <h1>Find Your Pokemon</h1>
             <form action="/result" class="form-container2">
                 <select id="pokemon" name="pokemon">
-                    {{range .Pokemon}}
-                    <option value="{{.EntryNo}}">{{.Species.Name}}</option>
+                    {{range .ListArticles}}
+                    <option value="{{.EntryNo}}">{{.Species}}</option>
                     {{end}}
                 </select>
                 <input type="submit">
             </form>
-            <h1>result {{.RsData.Name}}</h1>
+            <h1>result {{.Name}}</h1>
             <div class="img-container2">
                 <img src="{{.FrontDefault}}" onClick="location.href='../'" alt="W3Schools.com" class="buttonBox">
                 <img src="{{.BackDefault}}" onClick="location.href='../'" alt="W3Schools.com" class="buttonBox">

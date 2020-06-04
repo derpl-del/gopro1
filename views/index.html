@@ -21,10 +21,10 @@
     <div class="innerBox">
       <h1>Find Your Pokemon</h1>
       <form action="/result">
-        <label for="pokemon">{{.Name}}</label>
+        <label for="pokemon">Kanto</label>
         <select id="pokemon" name="pokemon">
-          {{range .Pokemon}}
-          <option value="{{.EntryNo}}">{{.Species.Name}}</option>
+          {{range .ListArticles}}
+          <option value="{{.EntryNo}}">{{.Species}}</option>
           {{end}}
         </select>
         <input type="submit">

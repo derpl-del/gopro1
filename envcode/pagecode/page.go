@@ -15,8 +15,13 @@ import (
 
 // FntReq for result.html
 type combined struct {
-	*structcode.Response
+	ListArticles []structcode.Article
 	RsData
+}
+
+//hpstruct
+type hpstruct struct {
+	ListArticles []structcode.Article
 }
 
 // RsData for result.html
@@ -33,16 +38,15 @@ type RsData struct {
 //HomePage page
 func HomePage(w http.ResponseWriter, r *http.Request) {
 	var filepath = path.Join("views", "index.html")
-	//data := function.getData()
-	data := structcode.GetValue()
-	//fmt.Println(data)
+	data := structcode.Articles
+	hprs := hpstruct{data}
 	var tmpl, err = template.ParseFiles(filepath)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	err = tmpl.Execute(w, data)
+	err = tmpl.Execute(w, hprs)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -53,11 +57,11 @@ func HomeResult(w http.ResponseWriter, r *http.Request) {
 	var validation1 bool
 	var input1 = r.FormValue("pokemon")
 	validation1 = dbcode.ValidationData(input1)
-	dateNew1 := structcode.GetValue()
+	dateNew1 := structcode.Articles
 	fmt.Printf("The result validation is: %v\n", validation1)
 	dateNew2 := ReturnData(validation1, input1)
 	combinedNew := combined{dateNew1, dateNew2}
-	b, _ := json.Marshal(combinedNew)
+	b, _ := json.Marshal(dateNew2)
 	wrcode.LoggingWrite(string(b))
 	var filepath = path.Join("views", "result.html")
 	var tmpl, err = template.ParseFiles(filepath)
@@ -97,14 +101,20 @@ func GetData(w http.ResponseWriter, r *http.Request) {
 	for i := 0; i < len(data.Pokemon); i++ {
 		fmt.Println(data.Pokemon[i].EntryNo)
 		input1 := data.Pokemon[i].EntryNo
-		data := structcode.GetPokeData(strconv.Itoa(input1))
+		data2 := structcode.GetPokeData(strconv.Itoa(input1))
 		intData := input1
 		prevIn := intData - 1
 		nextIn := intData + 1
-		dateNew := RsData{data.Name, data.Sprites.FrontDefault, data.Sprites.BackDefault, data.Sprites.FrontShiny, data.Sprites.BackShiny, prevIn, nextIn}
+		dateNew := RsData{data2.Name, data2.Sprites.FrontDefault, data2.Sprites.BackDefault, data2.Sprites.FrontShiny, data2.Sprites.BackShiny, prevIn, nextIn}
 		b, _ := json.Marshal(dateNew)
 		wrcode.LoggingWrite(string(b))
-		dbcode.InsData(data.Name, data.Sprites.FrontDefault, data.Sprites.BackDefault, data.Sprites.FrontShiny, data.Sprites.BackShiny, prevIn, nextIn)
+		dbcode.InsData(data2.Name, data2.Sprites.FrontDefault, data2.Sprites.BackDefault, data2.Sprites.FrontShiny, data2.Sprites.BackShiny, prevIn, nextIn)
 	}
 	fmt.Fprintf(w, " ---- Success")
+}
+
+//ReturnAllArticles A
+func ReturnAllArticles(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Endpoint Hit: returnAllArticles")
+	json.NewEncoder(w).Encode(structcode.Articles)
 }

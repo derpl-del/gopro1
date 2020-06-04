@@ -13,7 +13,7 @@ func LoggingWrite(input string) {
 	logtime := currentTime.Format("2006-01-02 15:04:05.000000")
 	logdata := "##########LOGNEW##########\n"
 	mydata := []byte(logdata)
-	logTittle := "log/" + currentTime.Format("20060102") + "myfile.data"
+	logTittle := "log/" + currentTime.Format("20060102") + "access_log.log"
 	if FileExist(logTittle) {
 
 	} else {
