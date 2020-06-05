@@ -7,6 +7,8 @@ import (
 
 	//for framework
 	_ "github.com/godror/godror"
+	//for framework
+	"github.com/derpl-del/gopro1/envcode/wrcode"
 )
 
 //GetSysDate a
@@ -93,16 +95,16 @@ func ValidationData(input1 string) bool {
 }
 
 //GetData a
-func GetData(input1 string) (string, string, string, string, string, string, int, int) {
+func GetData(input1 string) (string, string, string, string, string, string, int, int, string, string) {
 	fmt.Println("GetData")
 	db, err := sql.Open("godror", "testing/welcome1@xe")
 	if err != nil {
 		fmt.Println(err)
-		return "null", "null", "null", "null", "null", "null", 0, 0
+		return "null", "null", "null", "null", "null", "null", 0, 0, "null", "null"
 	}
 	defer db.Close()
 
-	statementSQL := fmt.Sprintf("select * from POKEMON_NEW where id = '%v' and rownum = '1'", input1)
+	statementSQL := fmt.Sprintf("select X.ID,X.NAME,X.FRONTDEFAULT,X.BACKDEFAULT,X.FRONTSHINY,X.BACKSHINY,X.DATABEFORE,X.DATAAFTER,Z.TYPE1,Z.TYPE2 from POKEMON_NEW X join POKEMON_ENV Z on X.ID = Z.ID where X.id = '%v' and rownum = '1'", input1)
 	//statementSQL := "INSERT INTO POKEMON VALUES (" + input1 + "," + input2 + "," + input3 + "," + input4 + "," + input5 + "," + string(input6) + "," + string(input7) + ")"
 	//fmt.Printf("The query is: %s\n", statementSQL)
 	rows, err := db.Query(statementSQL)
@@ -110,7 +112,7 @@ func GetData(input1 string) (string, string, string, string, string, string, int
 	if err != nil {
 		fmt.Println("Error running query")
 		fmt.Println(err)
-		return "null", "null", "null", "null", "null", "null", 0, 0
+		return "null", "null", "null", "null", "null", "null", 0, 0, "null", "null"
 	}
 	defer rows.Close()
 
@@ -122,10 +124,31 @@ func GetData(input1 string) (string, string, string, string, string, string, int
 	var theRs6 string
 	var theRs7 int
 	var theRs8 int
+	var theRs9 string
+	var theRs10 string
 	for rows.Next() {
 
-		rows.Scan(&theRs1, &theRs2, &theRs3, &theRs4, &theRs5, &theRs6, &theRs7, &theRs8)
+		rows.Scan(&theRs1, &theRs2, &theRs3, &theRs4, &theRs5, &theRs6, &theRs7, &theRs8, &theRs9, &theRs10)
 	}
 	//fmt.Printf("The data is: %s,%s,%s,%s,%s,%s,%v,%v,\n", theRs1, theRs2, theRs3, theRs4, theRs5, theRs6, theRs7, theRs8)
-	return theRs1, theRs2, theRs3, theRs4, theRs5, theRs6, theRs7, theRs8
+	return theRs1, theRs2, theRs3, theRs4, theRs5, theRs6, theRs7, theRs8, theRs9, theRs10
+}
+
+//InsEnvTable Insert
+func InsEnvTable(table string, value string, condition string) {
+	db, err := sql.Open("godror", "testing/welcome1@xe")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer db.Close()
+	statementSQL := fmt.Sprintf("INSERT INTO %v VALUES (%v) %v", table, value, condition)
+	wrcode.LoggingWrite(statementSQL)
+	rows, err := db.Query(statementSQL)
+	if err != nil {
+		fmt.Println("Error running query")
+		fmt.Println(err)
+		return
+	}
+	defer rows.Close()
 }

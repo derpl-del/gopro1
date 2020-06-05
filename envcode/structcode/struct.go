@@ -113,6 +113,15 @@ type Article struct {
 //Articles array
 var Articles []Article
 
+//A TypePokemon to map every pokemon to.
+type TypePokemon struct {
+	No   int
+	Type string
+}
+
+//ListType array
+var ListType []TypePokemon
+
 //GetValue Func
 func GetValue() *Response {
 	response, err := http.Get("http://pokeapi.co/api/v2/pokedex/kanto/")
@@ -147,6 +156,7 @@ func GetPokeData(input string) *Response2 {
 
 	var responseObject Response2
 	json.Unmarshal(responseData, &responseObject)
+	fmt.Println(responseObject.Types)
 	return &responseObject
 }
 
@@ -157,5 +167,14 @@ func SearchFunc() {
 	for i := 0; i < len(data.Pokemon); i++ {
 		newdata := Article{EntryNo: data.Pokemon[i].EntryNo, Species: data.Pokemon[i].Species.Name}
 		Articles = append(Articles, newdata)
+	}
+}
+
+//GetType Func
+func GetType(input *Response2) {
+	ListType = []TypePokemon{}
+	for i := 0; i < len(input.Types); i++ {
+		newdata := TypePokemon{input.Types[i].Slot, input.Types[i].Type.Name}
+		ListType = append(ListType, newdata)
 	}
 }

@@ -19,9 +19,18 @@ type combined struct {
 	RsData
 }
 
+//EnvData for data
+type EnvData struct {
+}
+
 //hpstruct
 type hpstruct struct {
 	ListArticles []structcode.Article
+}
+
+//TypeStruct a
+type TypeStruct struct {
+	ListType []structcode.TypePokemon
 }
 
 // RsData for result.html
@@ -33,6 +42,8 @@ type RsData struct {
 	BackShiny    string
 	DataBefore   int
 	DataAfter    int
+	Type1        string
+	Type2        string
 }
 
 //HomePage page
@@ -81,15 +92,25 @@ func HomeResult(w http.ResponseWriter, r *http.Request) {
 func ReturnData(validation bool, input1 string) RsData {
 	if validation == true {
 		data := structcode.GetPokeData(input1)
+		structcode.GetType(data)
+		typedata := structcode.ListType
+		hprs := TypeStruct{typedata}
+		fmt.Println(hprs)
 		intData, _ := strconv.Atoi(input1)
 		prevIn := intData - 1
 		nextIn := intData + 1
-		dateNew := RsData{data.Name, data.Sprites.FrontDefault, data.Sprites.BackDefault, data.Sprites.FrontShiny, data.Sprites.BackShiny, prevIn, nextIn}
+		values := InsDataEnv(hprs, intData)
 		dbcode.InsData(data.Name, data.Sprites.FrontDefault, data.Sprites.BackDefault, data.Sprites.FrontShiny, data.Sprites.BackShiny, prevIn, nextIn)
+		dbcode.InsEnvTable("POKEMON_ENV", values, "")
+		if len(hprs.ListType) >= 2 {
+			dateNew := RsData{data.Name, data.Sprites.FrontDefault, data.Sprites.BackDefault, data.Sprites.FrontShiny, data.Sprites.BackShiny, prevIn, nextIn, hprs.ListType[0].Type, hprs.ListType[1].Type}
+			return dateNew
+		}
+		dateNew := RsData{data.Name, data.Sprites.FrontDefault, data.Sprites.BackDefault, data.Sprites.FrontShiny, data.Sprites.BackShiny, prevIn, nextIn, hprs.ListType[0].Type, ""}
 		return dateNew
 	}
-	_, result2, result3, result4, result5, result6, result7, result8 := dbcode.GetData(input1)
-	dateNew := RsData{result2, result3, result4, result5, result6, result7, result8}
+	_, result2, result3, result4, result5, result6, result7, result8, result9, result10 := dbcode.GetData(input1)
+	dateNew := RsData{result2, result3, result4, result5, result6, result7, result8, result9, result10}
 	return dateNew
 }
 
@@ -102,13 +123,23 @@ func GetData(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(data.Pokemon[i].EntryNo)
 		input1 := data.Pokemon[i].EntryNo
 		data2 := structcode.GetPokeData(strconv.Itoa(input1))
+		structcode.GetType(data2)
+		typedata := structcode.ListType
+		hprs := TypeStruct{typedata}
 		intData := input1
 		prevIn := intData - 1
 		nextIn := intData + 1
-		dateNew := RsData{data2.Name, data2.Sprites.FrontDefault, data2.Sprites.BackDefault, data2.Sprites.FrontShiny, data2.Sprites.BackShiny, prevIn, nextIn}
+		values := InsDataEnv(hprs, intData)
+		dbcode.InsEnvTable("POKEMON_ENV", values, "")
+		dbcode.InsData(data2.Name, data2.Sprites.FrontDefault, data2.Sprites.BackDefault, data2.Sprites.FrontShiny, data2.Sprites.BackShiny, prevIn, nextIn)
+		if len(hprs.ListType) >= 2 {
+			dateNew := RsData{data2.Name, data2.Sprites.FrontDefault, data2.Sprites.BackDefault, data2.Sprites.FrontShiny, data2.Sprites.BackShiny, prevIn, nextIn, hprs.ListType[0].Type, hprs.ListType[1].Type}
+			b, _ := json.Marshal(dateNew)
+			wrcode.LoggingWrite(string(b))
+		}
+		dateNew := RsData{data2.Name, data2.Sprites.FrontDefault, data2.Sprites.BackDefault, data2.Sprites.FrontShiny, data2.Sprites.BackShiny, prevIn, nextIn, hprs.ListType[0].Type, ""}
 		b, _ := json.Marshal(dateNew)
 		wrcode.LoggingWrite(string(b))
-		dbcode.InsData(data2.Name, data2.Sprites.FrontDefault, data2.Sprites.BackDefault, data2.Sprites.FrontShiny, data2.Sprites.BackShiny, prevIn, nextIn)
 	}
 	fmt.Fprintf(w, " ---- Success")
 }
@@ -117,4 +148,15 @@ func GetData(w http.ResponseWriter, r *http.Request) {
 func ReturnAllArticles(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Endpoint Hit: returnAllArticles")
 	json.NewEncoder(w).Encode(structcode.Articles)
+}
+
+//InsDataEnv a
+func InsDataEnv(input TypeStruct, num int) string {
+	fmt.Println(len(input.ListType))
+	if len(input.ListType) >= 2 {
+		valuestring := fmt.Sprintf("'%v','%v','%v'", num, input.ListType[0].Type, input.ListType[1].Type)
+		return valuestring
+	}
+	valuestring := fmt.Sprintf("'%v','%v','%v'", num, input.ListType[0].Type, "")
+	return valuestring
 }

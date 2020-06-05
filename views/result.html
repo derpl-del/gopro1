@@ -35,17 +35,39 @@
                 <img src="{{.FrontShiny}}" onClick="location.href='../'" alt="W3Schools.com" class="buttonBox">
                 <img src="{{.BackShiny}}" onClick="location.href='../'" alt="W3Schools.com" class="buttonBox">
             </div>
+            <table style="width:50%" class="tabel-container2">
+                <tr>
+                    <th>Pokemon</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>{{.Name}}</td>
+                </tr>
+                <tr>
+                    <td>Type1</td>
+                    <td>{{.Type1}}</td>
+                </tr>
+                <tr>
+                    <td>Type2</td>
+                    <td>{{.Type2}}</td>
+                </tr>
+            </table>
             <div>
                 {{ if eq .DataBefore 0}}
                 {{ else }}
-                <a href="/result?pokemon={{.DataBefore}}">Prev Pokemon</a>
+                <a href="/result?pokemon={{.DataBefore}}" class="pokemon_type">Prev Pokemon</a>
                 {{ end }}
 
                 {{ if eq .DataAfter 152}}
                 {{ else }}
-                <a href="/result?pokemon={{.DataAfter}}">Next Pokemon</a>
+                <a href="/result?pokemon={{.DataAfter}}" class="pokemon_type">Next Pokemon</a>
                 {{ end }}
             </div>
+            <a class="pokemon_type" href="https://web.whatsapp.com/send?text=your data is {{.Name}}"
+                data-action="share/whatsapp/share">Share
+                via
+                Whatsapp web</a>
         </div>
     </div>
 </body>

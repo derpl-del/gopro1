@@ -129,6 +129,12 @@ font-family:"Adobe Garamond Pro Bold", Georgia, "Times New Roman", Times, serif;
 	margin-left: 15px;
   }
 
+  .pokemon_type{
+	font-size: 16px;
+	margin-left: 15px;
+	margin-bottom: 5px;
+  }
+
 .contentBox
 {
 margin-top:10px;
