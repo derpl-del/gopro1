@@ -95,16 +95,16 @@ func ValidationData(input1 string) bool {
 }
 
 //GetData a
-func GetData(input1 string) (string, string, string, string, string, string, int, int, string, string) {
+func GetData(input1 string) (string, string, string, string, string, string, int, int, string, string, int, int, int, int, int, int) {
 	fmt.Println("GetData")
 	db, err := sql.Open("godror", "testing/welcome1@xe")
 	if err != nil {
 		fmt.Println(err)
-		return "null", "null", "null", "null", "null", "null", 0, 0, "null", "null"
+		return "null", "null", "null", "null", "null", "null", 0, 0, "null", "null", 0, 0, 0, 0, 0, 0
 	}
 	defer db.Close()
 
-	statementSQL := fmt.Sprintf("select X.ID,X.NAME,X.FRONTDEFAULT,X.BACKDEFAULT,X.FRONTSHINY,X.BACKSHINY,X.DATABEFORE,X.DATAAFTER,Z.TYPE1,Z.TYPE2 from POKEMON_NEW X join POKEMON_ENV Z on X.ID = Z.ID where X.id = '%v' and rownum = '1'", input1)
+	statementSQL := fmt.Sprintf("select X.ID,X.NAME,X.FRONTDEFAULT,X.BACKDEFAULT,X.FRONTSHINY,X.BACKSHINY,X.DATABEFORE,X.DATAAFTER,Z.TYPE1,Z.TYPE2,Z.HP,Z.ATK,Z.DEF,Z.SPATK,Z.SPDEF,Z.SPD from POKEMON_NEW X join POKEMON_ENV Z on X.ID = Z.ID where X.id = '%v' and rownum = '1'", input1)
 	//statementSQL := "INSERT INTO POKEMON VALUES (" + input1 + "," + input2 + "," + input3 + "," + input4 + "," + input5 + "," + string(input6) + "," + string(input7) + ")"
 	//fmt.Printf("The query is: %s\n", statementSQL)
 	rows, err := db.Query(statementSQL)
@@ -112,7 +112,7 @@ func GetData(input1 string) (string, string, string, string, string, string, int
 	if err != nil {
 		fmt.Println("Error running query")
 		fmt.Println(err)
-		return "null", "null", "null", "null", "null", "null", 0, 0, "null", "null"
+		return "null", "null", "null", "null", "null", "null", 0, 0, "null", "null", 0, 0, 0, 0, 0, 0
 	}
 	defer rows.Close()
 
@@ -126,12 +126,18 @@ func GetData(input1 string) (string, string, string, string, string, string, int
 	var theRs8 int
 	var theRs9 string
 	var theRs10 string
+	var theRs11 int
+	var theRs12 int
+	var theRs13 int
+	var theRs14 int
+	var theRs15 int
+	var theRs16 int
 	for rows.Next() {
 
-		rows.Scan(&theRs1, &theRs2, &theRs3, &theRs4, &theRs5, &theRs6, &theRs7, &theRs8, &theRs9, &theRs10)
+		rows.Scan(&theRs1, &theRs2, &theRs3, &theRs4, &theRs5, &theRs6, &theRs7, &theRs8, &theRs9, &theRs10, &theRs11, &theRs12, &theRs13, &theRs14, &theRs15, &theRs16)
 	}
 	//fmt.Printf("The data is: %s,%s,%s,%s,%s,%s,%v,%v,\n", theRs1, theRs2, theRs3, theRs4, theRs5, theRs6, theRs7, theRs8)
-	return theRs1, theRs2, theRs3, theRs4, theRs5, theRs6, theRs7, theRs8, theRs9, theRs10
+	return theRs1, theRs2, theRs3, theRs4, theRs5, theRs6, theRs7, theRs8, theRs9, theRs10, theRs11, theRs12, theRs13, theRs14, theRs15, theRs16
 }
 
 //InsEnvTable Insert

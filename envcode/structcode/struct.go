@@ -113,6 +113,16 @@ type Article struct {
 //Articles array
 var Articles []Article
 
+//A Stat to map every pokemon to.
+type Stat struct {
+	HP    int
+	ATK   int
+	DEF   int
+	SPATK int
+	SPDEF int
+	SPD   int
+}
+
 //A TypePokemon to map every pokemon to.
 type TypePokemon struct {
 	No   int
@@ -177,4 +187,25 @@ func GetType(input *Response2) {
 		newdata := TypePokemon{input.Types[i].Slot, input.Types[i].Type.Name}
 		ListType = append(ListType, newdata)
 	}
+}
+
+//GetStat Func
+func GetStat(users *Response2) Stat {
+	var HP, ATK, DEF, SPATK, SPDEF, SPD int
+	for i := 0; i < len(users.Stats); i++ {
+		if users.Stats[i].Stat.Name == "hp" {
+			HP = users.Stats[i].BaseStat
+		} else if users.Stats[i].Stat.Name == "attack" {
+			ATK = users.Stats[i].BaseStat
+		} else if users.Stats[i].Stat.Name == "defense" {
+			DEF = users.Stats[i].BaseStat
+		} else if users.Stats[i].Stat.Name == "special-attack" {
+			SPATK = users.Stats[i].BaseStat
+		} else if users.Stats[i].Stat.Name == "special-defense" {
+			SPDEF = users.Stats[i].BaseStat
+		}
+		SPD = users.Stats[i].BaseStat
+	}
+	ListStat := Stat{HP, ATK, DEF, SPATK, SPDEF, SPD}
+	return ListStat
 }
