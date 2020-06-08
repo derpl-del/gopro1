@@ -96,7 +96,7 @@ func ValidationData(input1 string) bool {
 
 //GetData a
 func GetData(input1 string) (string, string, string, string, string, string, int, int, string, string, int, int, int, int, int, int) {
-	fmt.Println("GetData")
+	//fmt.Println("GetData")
 	db, err := sql.Open("godror", "testing/welcome1@xe")
 	if err != nil {
 		fmt.Println(err)

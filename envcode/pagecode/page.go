@@ -8,15 +8,16 @@ import (
 	"path"
 	"strconv"
 
+	"github.com/derpl-del/gopro1/envcode/chcode"
 	"github.com/derpl-del/gopro1/envcode/dbcode"
 	"github.com/derpl-del/gopro1/envcode/structcode"
 	"github.com/derpl-del/gopro1/envcode/wrcode"
 )
 
-// FntReq for result.html
-type combined struct {
-	ListArticles []structcode.Article
+// Combined for result.html
+type Combined struct {
 	RsData
+	ListArticles []structcode.Article
 }
 
 //EnvData for data
@@ -68,14 +69,16 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 func HomeResult(w http.ResponseWriter, r *http.Request) {
 	var validation1 bool
 	var input1 = r.FormValue("pokemon")
+	chcode.DeleteFile()
 	validation1 = dbcode.ValidationData(input1)
 	dateNew1 := structcode.Articles
-	fmt.Printf("The result validation is: %v\n", validation1)
+	//fmt.Printf("The result validation is: %v\n", validation1)
 	dateNew2 := ReturnData(validation1, input1)
-
-	combinedNew := combined{dateNew1, dateNew2}
+	combinedNew := Combined{dateNew2, dateNew1}
 	b, _ := json.Marshal(dateNew2)
 	wrcode.LoggingWrite(string(b))
+	b2, _ := json.Marshal(combinedNew)
+	chcode.MakeCache(string(b2), input1)
 	var filepath = path.Join("views", "result.html")
 	var tmpl, err = template.ParseFiles(filepath)
 	if err != nil {
@@ -87,7 +90,7 @@ func HomeResult(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 	//fmt.Fprint(data)
-
+	chcode.DeleteFile()
 }
 
 //ReturnData for validation data
@@ -122,10 +125,10 @@ func ReturnData(validation bool, input1 string) RsData {
 //GetData page
 func GetData(w http.ResponseWriter, r *http.Request) {
 	data := structcode.GetValue()
-	fmt.Println(data.Pokemon)
+	//fmt.Println(data.Pokemon)
 	fmt.Fprintf(w, "Hi")
 	for i := 0; i < len(data.Pokemon); i++ {
-		fmt.Println(data.Pokemon[i].EntryNo)
+		//fmt.Println(data.Pokemon[i].EntryNo)
 		input1 := data.Pokemon[i].EntryNo
 		data2 := structcode.GetPokeData(strconv.Itoa(input1))
 		structcode.GetType(data2)
@@ -152,7 +155,7 @@ func GetData(w http.ResponseWriter, r *http.Request) {
 
 //ReturnAllArticles A
 func ReturnAllArticles(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Endpoint Hit: returnAllArticles")
+	//fmt.Println("Endpoint Hit: returnAllArticles")
 	json.NewEncoder(w).Encode(structcode.Articles)
 }
 

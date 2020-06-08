@@ -166,7 +166,7 @@ func GetPokeData(input string) *Response2 {
 
 	var responseObject Response2
 	json.Unmarshal(responseData, &responseObject)
-	fmt.Println(responseObject.Types)
+	//fmt.Println(responseObject.Types)
 	return &responseObject
 }
 
