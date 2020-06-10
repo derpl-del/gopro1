@@ -11,48 +11,15 @@ import (
 	"github.com/derpl-del/gopro1/envcode/chcode"
 	"github.com/derpl-del/gopro1/envcode/dbcode"
 	"github.com/derpl-del/gopro1/envcode/structcode"
+	"github.com/derpl-del/gopro1/envcode/structdata"
 	"github.com/derpl-del/gopro1/envcode/wrcode"
 )
-
-// Combined for result.html
-type Combined struct {
-	RsData
-	ListArticles []structcode.Article
-}
-
-//EnvData for data
-type EnvData struct {
-}
-
-//hpstruct
-type hpstruct struct {
-	ListArticles []structcode.Article
-}
-
-//TypeStruct a
-type TypeStruct struct {
-	ListType []structcode.TypePokemon
-}
-
-// RsData for result.html
-type RsData struct {
-	Name         string
-	FrontDefault string
-	BackDefault  string
-	FrontShiny   string
-	BackShiny    string
-	DataBefore   int
-	DataAfter    int
-	Type1        string
-	Type2        string
-	structcode.Stat
-}
 
 //HomePage page
 func HomePage(w http.ResponseWriter, r *http.Request) {
 	var filepath = path.Join("views", "index.html")
 	data := structcode.Articles
-	hprs := hpstruct{data}
+	hprs := structdata.HpStruct{ListArticles: data}
 	var tmpl, err = template.ParseFiles(filepath)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -69,39 +36,65 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 func HomeResult(w http.ResponseWriter, r *http.Request) {
 	var validation1 bool
 	var input1 = r.FormValue("pokemon")
-	chcode.DeleteFile()
-	validation1 = dbcode.ValidationData(input1)
-	dateNew1 := structcode.Articles
-	//fmt.Printf("The result validation is: %v\n", validation1)
-	dateNew2 := ReturnData(validation1, input1)
-	combinedNew := Combined{dateNew2, dateNew1}
-	b, _ := json.Marshal(dateNew2)
-	wrcode.LoggingWrite(string(b))
-	b2, _ := json.Marshal(combinedNew)
-	chcode.MakeCache(string(b2), input1)
-	var filepath = path.Join("views", "result.html")
-	var tmpl, err = template.ParseFiles(filepath)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+	chcode.DeleteSche()
+	validationcache := chcode.FileExist(input1)
+	//fmt.Println(validationcache)
+	if validationcache == false {
+		validation1 = dbcode.ValidationData(input1)
+		dateNew1 := structcode.Articles
+		//fmt.Printf("The result validation is: %v\n", validation1)
+		dateNew2 := ReturnData(validation1, input1)
+		combinedNew := structdata.Combined{RsData: dateNew2, ListArticles: dateNew1}
+		b, _ := json.Marshal(dateNew2)
+		wrcode.LoggingWrite(string(b))
+		b2, _ := json.Marshal(combinedNew)
+		wrcode.WriteFileExcel(combinedNew)
+		//fmt.Println(string(b2))
+		chcode.MakeCache(string(b2), input1)
+		var filepath = path.Join("views", "result.html")
+		var tmpl, err = template.ParseFiles(filepath)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		err = tmpl.Execute(w, combinedNew)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		//fmt.Fprint(data)
+		chcode.DeleteSche()
+	} else {
+		struct1 := chcode.ReadFile(input1)
+		wrcode.LoggingWrite("Cache")
+		wrcode.WriteFileExcel(struct1)
+		b, _ := json.Marshal(struct1.RsData)
+		wrcode.LoggingWrite(string(b))
+		var filepath = path.Join("views", "result.html")
+		var tmpl, err = template.ParseFiles(filepath)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		err = tmpl.Execute(w, struct1)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		//fmt.Fprint(data)
+		chcode.DeleteSche()
 	}
-	err = tmpl.Execute(w, combinedNew)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
-	//fmt.Fprint(data)
-	chcode.DeleteFile()
+
 }
 
 //ReturnData for validation data
-func ReturnData(validation bool, input1 string) RsData {
+func ReturnData(validation bool, input1 string) structdata.RsData {
 	if validation == true {
 		data := structcode.GetPokeData(input1)
 		structcode.GetType(data)
 		dateStat := structcode.GetStat(data)
 		typedata := structcode.ListType
-		hprs := TypeStruct{typedata}
+		hprs := structdata.TypeStruct{ListType: typedata}
 		//fmt.Println(hprs)
+		wrcode.LoggingWrite("API")
 		intData, _ := strconv.Atoi(input1)
 		prevIn := intData - 1
 		nextIn := intData + 1
@@ -109,44 +102,45 @@ func ReturnData(validation bool, input1 string) RsData {
 		dbcode.InsData(data.Name, data.Sprites.FrontDefault, data.Sprites.BackDefault, data.Sprites.FrontShiny, data.Sprites.BackShiny, prevIn, nextIn)
 		dbcode.InsEnvTable("POKEMON_ENV", values, "")
 		if len(hprs.ListType) >= 2 {
-			dateNew := RsData{data.Name, data.Sprites.FrontDefault, data.Sprites.BackDefault, data.Sprites.FrontShiny, data.Sprites.BackShiny, prevIn, nextIn, hprs.ListType[0].Type, hprs.ListType[1].Type, dateStat}
+			dateNew := structdata.RsData{Id: input1, Name: data.Name, FrontDefault: data.Sprites.FrontDefault, BackDefault: data.Sprites.BackDefault, FrontShiny: data.Sprites.FrontShiny, BackShiny: data.Sprites.BackShiny, DataBefore: prevIn, DataAfter: nextIn, Type1: hprs.ListType[0].Type, Type2: hprs.ListType[1].Type, Stat: dateStat}
 			return dateNew
 		}
-		dateNew := RsData{data.Name, data.Sprites.FrontDefault, data.Sprites.BackDefault, data.Sprites.FrontShiny, data.Sprites.BackShiny, prevIn, nextIn, hprs.ListType[0].Type, "", dateStat}
+		dateNew := structdata.RsData{Id: input1, Name: data.Name, FrontDefault: data.Sprites.FrontDefault, BackDefault: data.Sprites.BackDefault, FrontShiny: data.Sprites.FrontShiny, BackShiny: data.Sprites.BackShiny, DataBefore: prevIn, DataAfter: nextIn, Type1: hprs.ListType[0].Type, Type2: "", Stat: dateStat}
 		return dateNew
 	}
 	_, result2, result3, result4, result5, result6, result7, result8, result9, result10, result11, result12, result13, result14, result15, result16 := dbcode.GetData(input1)
 	//fmt.Println(result2, result3, result4, result5, result6, result7, result8, result9, result10, result11, result12, result13, result14, result15, result16)
 	stat := structcode.Stat{HP: result11, ATK: result12, DEF: result13, SPATK: result14, SPDEF: result15, SPD: result16}
-	dateNew := RsData{result2, result3, result4, result5, result6, result7, result8, result9, result10, stat}
+	dateNew := structdata.RsData{Id: input1, Name: result2, FrontDefault: result3, BackDefault: result4, FrontShiny: result5, BackShiny: result6, DataBefore: result7, DataAfter: result8, Type1: result9, Type2: result10, Stat: stat}
+	wrcode.LoggingWrite("DataBase")
 	return dateNew
 }
 
 //GetData page
 func GetData(w http.ResponseWriter, r *http.Request) {
-	data := structcode.GetValue()
+	data2 := structcode.GetValue()
 	//fmt.Println(data.Pokemon)
 	fmt.Fprintf(w, "Hi")
-	for i := 0; i < len(data.Pokemon); i++ {
+	for i := 0; i < len(data2.Pokemon); i++ {
 		//fmt.Println(data.Pokemon[i].EntryNo)
-		input1 := data.Pokemon[i].EntryNo
-		data2 := structcode.GetPokeData(strconv.Itoa(input1))
-		structcode.GetType(data2)
-		dateStat := structcode.GetStat(data2)
+		input1 := data2.Pokemon[i].EntryNo
+		data := structcode.GetPokeData(strconv.Itoa(input1))
+		structcode.GetType(data)
+		dateStat := structcode.GetStat(data)
 		typedata := structcode.ListType
-		hprs := TypeStruct{typedata}
+		hprs := structdata.TypeStruct{ListType: typedata}
 		intData := input1
 		prevIn := intData - 1
 		nextIn := intData + 1
 		values := InsDataEnv(hprs, intData, dateStat)
 		dbcode.InsEnvTable("POKEMON_ENV", values, "")
-		dbcode.InsData(data2.Name, data2.Sprites.FrontDefault, data2.Sprites.BackDefault, data2.Sprites.FrontShiny, data2.Sprites.BackShiny, prevIn, nextIn)
+		dbcode.InsData(data.Name, data.Sprites.FrontDefault, data.Sprites.BackDefault, data.Sprites.FrontShiny, data.Sprites.BackShiny, prevIn, nextIn)
 		if len(hprs.ListType) >= 2 {
-			dateNew := RsData{data2.Name, data2.Sprites.FrontDefault, data2.Sprites.BackDefault, data2.Sprites.FrontShiny, data2.Sprites.BackShiny, prevIn, nextIn, hprs.ListType[0].Type, hprs.ListType[1].Type, dateStat}
+			dateNew := structdata.RsData{Id: strconv.Itoa(input1), Name: data.Name, FrontDefault: data.Sprites.FrontDefault, BackDefault: data.Sprites.BackDefault, FrontShiny: data.Sprites.FrontShiny, BackShiny: data.Sprites.BackShiny, DataBefore: prevIn, DataAfter: nextIn, Type1: hprs.ListType[0].Type, Type2: hprs.ListType[1].Type, Stat: dateStat}
 			b, _ := json.Marshal(dateNew)
 			wrcode.LoggingWrite(string(b))
 		}
-		dateNew := RsData{data2.Name, data2.Sprites.FrontDefault, data2.Sprites.BackDefault, data2.Sprites.FrontShiny, data2.Sprites.BackShiny, prevIn, nextIn, hprs.ListType[0].Type, "", dateStat}
+		dateNew := structdata.RsData{Id: strconv.Itoa(input1), Name: data.Name, FrontDefault: data.Sprites.FrontDefault, BackDefault: data.Sprites.BackDefault, FrontShiny: data.Sprites.FrontShiny, BackShiny: data.Sprites.BackShiny, DataBefore: prevIn, DataAfter: nextIn, Type1: hprs.ListType[0].Type, Type2: "", Stat: dateStat}
 		b, _ := json.Marshal(dateNew)
 		wrcode.LoggingWrite(string(b))
 	}
@@ -160,7 +154,7 @@ func ReturnAllArticles(w http.ResponseWriter, r *http.Request) {
 }
 
 //InsDataEnv a
-func InsDataEnv(input TypeStruct, num int, stat structcode.Stat) string {
+func InsDataEnv(input structdata.TypeStruct, num int, stat structcode.Stat) string {
 	if len(input.ListType) >= 2 {
 		valuestring := fmt.Sprintf("'%v','%v','%v','%v','%v','%v','%v','%v','%v'", num, input.ListType[0].Type, input.ListType[1].Type, stat.HP, stat.ATK, stat.DEF, stat.SPATK, stat.SPDEF, stat.SPDEF)
 		return valuestring

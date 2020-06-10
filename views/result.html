@@ -30,15 +30,27 @@
             </form>
             <h1>result {{.Name}}</h1>
             <div class="img-container2">
-                <img src="{{.FrontDefault}}" onClick="location.href='../'" alt="W3Schools.com" class="buttonBox">
-                <img src="{{.BackDefault}}" onClick="location.href='../'" alt="W3Schools.com" class="buttonBox">
-                <img src="{{.FrontShiny}}" onClick="location.href='../'" alt="W3Schools.com" class="buttonBox">
-                <img src="{{.BackShiny}}" onClick="location.href='../'" alt="W3Schools.com" class="buttonBox">
+                <a href="{{.FrontDefault}}" download="FrontDefault">
+                    <img src="{{.FrontDefault}}" alt="FrontDefault" class="buttonBox">
+                </a>
+                <a href="{{.BackDefault}}" download="BackDefault">
+                    <img src="{{.BackDefault}}" alt="BackDefault" class="buttonBox">
+                </a>
+                <a href="{{.FrontShiny}}" download="FrontShiny">
+                    <img src="{{.FrontShiny}}" alt="FrontShiny" class="buttonBox">
+                </a>
+                <a href="{{.BackShiny}}" download="BackShiny">
+                    <img src="{{.BackShiny}}" alt="BackShiny" class="buttonBox">
+                </a>
             </div>
             <table style="width:50%" class="tabel-container2">
                 <tr>
                     <th>Pokemon</th>
                     <th></th>
+                </tr>
+                <tr>
+                    <td>PokeNumber</td>
+                    <td>{{.Id}}</td>
                 </tr>
                 <tr>
                     <td>Name</td>
@@ -92,6 +104,11 @@
                 data-action="share/whatsapp/share">Share
                 via
                 Whatsapp web</a>
+            <div>
+                <a href="http://localhost:9000/FileDownload/pokemon{{.Id}}_file.xlsx"
+                    download="pokemon{{.Id}}_file.xlsx" class="file-download">
+                    Download</a>
+            </div>
         </div>
     </div>
 </body>

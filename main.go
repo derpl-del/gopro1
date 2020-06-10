@@ -7,16 +7,13 @@ import (
 
 	"github.com/derpl-del/gopro1/envcode/chcode"
 	"github.com/derpl-del/gopro1/envcode/pagecode"
+	"github.com/derpl-del/gopro1/envcode/schcode"
 	"github.com/derpl-del/gopro1/envcode/structcode"
 	"github.com/gorilla/mux"
-	"github.com/robfig/cron"
 )
 
 func main() {
-	chcode.DeleteFile()
-	c := cron.New()
-	c.AddFunc("5 * * * * *", chcode.DeleteFile)
-	c.Start()
+	chcode.DeleteSche()
 	Funchandler()
 }
 
@@ -26,12 +23,14 @@ func Funchandler() {
 	//pagecode.Mux()
 	structcode.SearchFunc()
 	task()
+	schcode.ClearCache()
 	r := mux.NewRouter()
 	r.HandleFunc("/", pagecode.HomePage)
 	r.HandleFunc("/result", pagecode.HomeResult)
 	r.HandleFunc("/return", pagecode.ReturnAllArticles)
 	r.HandleFunc("/getdata", pagecode.GetData)
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("hdmonochrome"))))
+	r.PathPrefix("/FileDownload/").Handler(http.StripPrefix("/FileDownload/", http.FileServer(http.Dir("FileDownload"))))
 	fmt.Println("server started at localhost:9000")
 	http.ListenAndServe(":9000", r)
 }

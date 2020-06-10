@@ -1,10 +1,13 @@
 package chcode
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"time"
+
+	"github.com/derpl-del/gopro1/envcode/structdata"
 )
 
 //MakeCache Func
@@ -19,12 +22,19 @@ func MakeCache(data string, PokeID string) {
 }
 
 //FileExist validation
-func FileExist(filename string) bool {
-	info, err := os.Stat(filename)
+func FileExist(PokeID string) bool {
+	CacheTittle := "cachefile/pokemon" + PokeID + "_cache.json"
+	info, err := os.Stat(CacheTittle)
 	if os.IsNotExist(err) {
 		return false
 	}
 	return !info.IsDir()
+}
+
+//DeleteSche validation
+func DeleteSche() {
+	DeleteFile()
+	DeleteFileExcel()
 }
 
 //DeleteFile validation
@@ -41,4 +51,37 @@ func DeleteFile() {
 			os.Remove(namefile)
 		}
 	}
+}
+
+//DeleteFileExcel validation
+func DeleteFileExcel() {
+	var cutoff = 4 * time.Minute
+	fileInfo, err := ioutil.ReadDir("FileDownload/")
+	if err != nil {
+		fmt.Println(err)
+	}
+	now := time.Now()
+	for _, info := range fileInfo {
+		if diff := now.Sub(info.ModTime()); diff > cutoff {
+			namefile := "FileDownload/" + info.Name()
+			os.Remove(namefile)
+		}
+	}
+}
+
+//ReadFile func
+func ReadFile(PokeID string) structdata.Combined {
+	CacheTittle := "cachefile/pokemon" + PokeID + "_cache.json"
+	jsonFile, err := os.Open(CacheTittle)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	//fmt.Println("Successfully Opened users.json")
+	defer jsonFile.Close()
+
+	byteValue, _ := ioutil.ReadAll(jsonFile)
+	var struct1 structdata.Combined
+	json.Unmarshal(byteValue, &struct1)
+	return struct1
 }
